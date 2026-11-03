@@ -90,6 +90,7 @@
     <li><strong>I do not sell your data for money and do not collect your name, email or account data.</strong> Google’s ads may use data for personalised ads, which some US state laws treat as selling or sharing; you can opt out in <strong>Settings → Privacy options</strong>.</li>
     <li>The game shows ads through <strong>Google AdMob</strong>. Google may collect data for that, as described below. Where the law requires it, you are asked for your consent first, and you can change your choice at any time.</li>
     <li>The game downloads a few numbers (how often ads may appear) from <strong>Firebase Remote Config</strong>.</li>
+    <li>The game uses <strong>Google Analytics for Firebase</strong> to record how levels are played, only to tune the difficulty. No name, email or advertising ID is collected for this. In the EEA and the UK it runs only if you consent; elsewhere it is on by default.</li>
     <li>Purchases are handled entirely by <strong>Google Play</strong>.</li>
     <li>The game is <strong>not directed to children</strong>.</li>
   </ul>
@@ -110,7 +111,7 @@
 <p>These files are <strong>never sent to me or to anyone else</strong>. Other apps cannot read them. They are removed when you uninstall the game or clear its data in Android’s settings. If you have backup turned on, Android may copy them to your own Google account (Android Auto Backup); that is between you and Google.</p>
 
 <h2>3. Ads (Google AdMob)</h2>
-<p>Twinova is free. It is supported by ads served by <strong>Google AdMob</strong>, using Google’s Mobile Ads SDK. Optional in-app purchases, <em>Remove ads</em> and booster packs, are available (see section 5).</p>
+<p>Twinova is free. It is supported by ads served by <strong>Google AdMob</strong>, using Google’s Mobile Ads SDK. Optional in-app purchases, <em>Remove ads</em> and booster packs, are available (see section 6).</p>
 <ul>
   <li><strong>Rewarded ads</strong> are optional: you choose to watch one to get +5 moves, a free booster for one attempt, or a Resonance scan. You get the reward only if you watch the ad to the end. They stay available if you bought <em>Remove ads</em>.</li>
   <li><strong>Interstitial ads</strong> may appear between levels, only after you have reached level 15, and never if you bought <em>Remove ads</em>.</li>
@@ -130,46 +131,68 @@
 <p>To answer, Firebase receives the <strong>installation ID</strong> (a random identifier of this installation of the game), your <strong>IP address</strong>, and the <strong>app version</strong> and device details that every internet request carries. No account, name, email address or advertising ID is involved, and the game works without the answer.</p>
 <p>This data is processed by Google. More about how Google handles it: <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a>.</p>
 
-<h2>5. Purchases (Google Play Billing)</h2>
+<h2>5. Analytics (Google Analytics for Firebase)</h2>
+<p>To see where levels are too hard or too easy, and so to tune the difficulty, Twinova uses <strong>Google Analytics for Firebase</strong>, a service from Google. It records events about how the game is played:</p>
+<ul>
+  <li><strong>Levels:</strong> a level started (its identifier, the chapter, which attempt it is, the move limit, and whether you continued it from where you left it) and ended (won, lost, restarted or left; the moves used and left, the stars, whether you took the +5 moves or used boosters, how many Resonances you made and on which moves, which goals were still open, and the seconds played).</li>
+  <li><strong>The daily challenge:</strong> its date, whether you won and your streak.</li>
+  <li><strong>Learning the game:</strong> which tutorial steps you completed and when you opened <em>How to play</em>.</li>
+  <li><strong>Ads and the shop:</strong> which optional rewarded ads you asked for and whether one was shown, watched or not available; whether you used the Resonance scan; when you opened the shop and how a purchase ended (done, cancelled, waiting or failed, with the product&rsquo;s name only, never a price).</li>
+  <li><strong>Automatic events</strong> that Firebase records on its own: first open, sessions and, for purchases made through Google Play, the purchase itself (Google records it).</li>
+</ul>
+<p>Each event is sent together with an <strong>app instance ID</strong> (a random identifier of this installation of the game), your <strong>device model</strong>, <strong>operating-system version</strong>, <strong>app version</strong> and <strong>approximate country</strong>, which is derived from your IP address.</p>
+<p>No account, name, email address or advertising ID is collected for analytics.</p>
+<p>To compare how people really play with how I expected them to, I export these events from Google Analytics to a BigQuery project that only I use, and I use them only to tune the game&rsquo;s difficulty.</p>
+<h3>Your consent and your choices</h3>
+<ul>
+  <li>In the European Economic Area and the United Kingdom, analytics runs only if you consent in Google&rsquo;s consent form. Until you have answered it, nothing is sent. You can change your choice at any time in the game under <strong>Settings &rarr; Privacy options</strong>.</li>
+  <li>Outside the EEA and the UK, analytics is on by default.</li>
+  <li>In US states with privacy laws, the choice in Privacy options applies to ads, not to these game statistics.</li>
+</ul>
+<p>Google Analytics keeps event-level data for 2 months, and data linked to the app instance ID for up to 14 months (this period starts again when the game is used again). Aggregated reports are kept longer.</p>
+<p>This data is processed by Google. More about how Google handles it: <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a> and <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">How Google uses information from sites or apps that use its services</a>.</p>
+
+<h2>6. Purchases (Google Play Billing)</h2>
 <p>You can buy <em>Remove ads</em> and booster packs inside the game. Payments are processed entirely by <strong>Google Play</strong>. I never see your card details, name or address; Google only tells the game that the purchase went through, which the game remembers on your phone as described above. Refunds and payment questions are handled by Google Play. See <a href="https://policies.google.com/privacy" rel="noopener">Google’s Privacy Policy</a> and the <a href="https://play.google.com/about/play-terms/" rel="noopener">Google Play Terms of Service</a>.</p>
 
-<h2>6. What the game does not do</h2>
+<h2>7. What the game does not do</h2>
 <ul>
   <li>It has no account, log-in or user profile.</li>
-  <li>It has no tracking or cookies of its own. (The ads described in section 3 and the settings described in section 4 are Google’s and may use their own identifiers, cookies or similar technologies.)</li>
+  <li>It has no tracking or cookies of its own. (The ads described in section 3, the settings described in section 4 and the analytics described in section 5 are Google’s and may use their own identifiers, cookies or similar technologies.)</li>
   <li>It does not use your location, contacts, camera, microphone, photos or files.</li>
   <li>It has no chat or social features and does not show other players’ data.</li>
 </ul>
 <p>The game asks Android for these permissions:</p>
 <ul>
-  <li><strong>Internet and network state</strong> (<code>INTERNET</code>, <code>ACCESS_NETWORK_STATE</code>): to load ads and settings and to check the connection. Used by Google’s Mobile Ads SDK and Firebase.</li>
+  <li><strong>Internet and network state</strong> (<code>INTERNET</code>, <code>ACCESS_NETWORK_STATE</code>): to load ads and settings, send analytics events and check the connection. Used by Google’s Mobile Ads SDK and Firebase.</li>
   <li><strong>Advertising ID</strong> (<code>com.google.android.gms.permission.AD_ID</code>): the advertising ID, used for ads as described in section 3.</li>
   <li><strong>Android’s ad services</strong> (<code>ACCESS_ADSERVICES_AD_ID</code>, <code>ACCESS_ADSERVICES_ATTRIBUTION</code>, <code>ACCESS_ADSERVICES_TOPICS</code>): Android’s Privacy Sandbox ad services, used by Google’s Mobile Ads SDK where your device supports them.</li>
   <li><strong>Google Play billing</strong> (<code>com.android.vending.BILLING</code>): the optional purchases through Google Play.</li>
+  <li><strong>Install source from Google Play</strong> (<code>com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE</code>): lets Google Play tell the analytics library how the game was installed.</li>
   <li><strong>Keeping the device awake and running a short task</strong> (<code>WAKE_LOCK</code>, <code>FOREGROUND_SERVICE</code>): added by the background-task library (WorkManager) of Google’s Mobile Ads SDK, to finish short background tasks. The game itself does not run in the background.</li>
   <li><strong>Vibration</strong> (<code>VIBRATE</code>): haptic feedback only, which you can turn off in Settings.</li>
 </ul>
 <p>The game does not ask for any other permission, such as location, contacts, camera, microphone, photos or files.</p>
 
-<h2>7. Sharing</h2>
-<p>I do not sell your data for money. The only other parties involved are Google (ads, Remote Config and payments), as described above, which act under their own privacy policies. Google’s ads may use data for personalised ads, which some US state laws treat as selling or sharing; you can opt out in <strong>Settings → Privacy options</strong>.</p>
+<h2>8. Sharing</h2>
+<p>I do not sell your data for money. The only other parties involved are Google (ads, analytics, Remote Config and payments), as described above, which act under their own privacy policies. Google’s ads may use data for personalised ads, which some US state laws treat as selling or sharing; you can opt out in <strong>Settings → Privacy options</strong>.</p>
 
-<h2>8. Children</h2>
+<h2>9. Children</h2>
 <p>Twinova is a puzzle game for a general audience and is <strong>not directed to children under 13</strong> (or under the minimum age set by the law where you live, for example 16 in some EU countries). I do not knowingly collect any information from children, and the game itself asks for no name, email or account details. If you are a parent or guardian and believe a child has used the game in a way that concerns you, contact me and I will help.</p>
 
-<h2>9. Keeping and deleting data</h2>
-<p>Game data stays on your phone until you uninstall the game or clear its data. Data that Google collects for ads and Remote Config is kept and can be managed as described in Google’s policies and in your Google account and Android settings.</p>
+<h2>10. Keeping and deleting data</h2>
+<p>Game data stays on your phone until you uninstall the game or clear its data. Data that Google collects for ads, analytics and Remote Config is kept and can be managed as described in Google’s policies and in your Google account and Android settings.</p>
 
-<h2>10. Your rights</h2>
-<p>Depending on where you live (for example in the EU/EEA, the United Kingdom or some US states) you may have rights over personal data, such as access, correction, deletion, objection and withdrawing consent. Because I keep no account and no details that identify you, there is little for me to access or delete myself; for data Google collects through ads and Remote Config, use the choices above, your Google account controls, or contact Google. You can withdraw ad consent at any time as described in section 3. You may also complain to your local data-protection authority. You are welcome to contact me with any question.</p>
+<h2>11. Your rights</h2>
+<p>Depending on where you live (for example in the EU/EEA, the United Kingdom or some US states) you may have rights over personal data, such as access, correction, deletion, objection and withdrawing consent. Because I keep no account and no details that identify you, there is little for me to access or delete myself; for data Google collects through ads, analytics and Remote Config, use the choices above, your Google account controls, or contact Google. You can withdraw ad and analytics consent at any time as described in sections 3 and 5. You may also complain to your local data-protection authority. You are welcome to contact me with any question.</p>
 
-<h2>11. Security and international processing</h2>
-<p>Your game data sits in the game’s private storage on your phone and is protected by Android. Payments, ads and Remote Config are handled by Google, which processes data in many countries under its own safeguards.</p>
+<h2>12. Security and international processing</h2>
+<p>Your game data sits in the game’s private storage on your phone and is protected by Android. Payments, ads, analytics and Remote Config are handled by Google, which processes data in many countries under its own safeguards.</p>
 
-<h2>12. Changes to this policy</h2>
+<h2>13. Changes to this policy</h2>
 <p>When I change this policy I will update the date at the top of this page. The current version is always available at this address.</p>
 
-<h2>13. Contact</h2>
+<h2>14. Contact</h2>
 <p>Virevon — <a href="mailto:quantumesqy@gmail.com">quantumesqy@gmail.com</a></p>
 
 <footer><p>Twinova · Virevon · Effective 3 November 2026</p></footer>
@@ -191,6 +214,7 @@
     <li><strong>Не продавам данните ти за пари и не събирам името, имейла или данни за акаунт.</strong> Рекламите на Google може да използват данни за персонализирани реклами, което някои закони в щати на САЩ смятат за продажба или споделяне; можеш да се откажеш от <strong>Настройки → Опции за поверителност</strong>.</li>
     <li>Играта показва реклами чрез <strong>Google AdMob</strong>. За това Google може да събира данни, както е описано по-долу. Където законът го изисква, първо те питаме за съгласие, а избора си можеш да промениш по всяко време.</li>
     <li>Играта изтегля няколко числа (колко често могат да се появяват реклами) от <strong>Firebase Remote Config</strong>.</li>
+    <li>Играта ползва <strong>Google Analytics for Firebase</strong>, за да записва как се играят нивата — само за да настройвам трудността. За това не се събират име, имейл или рекламен идентификатор. В ЕИП и Обединеното кралство работи само ако се съгласиш; другаде е включена по подразбиране.</li>
     <li>Покупките се обработват изцяло от <strong>Google Play</strong>.</li>
     <li>Играта <strong>не е насочена към деца</strong>.</li>
   </ul>
@@ -211,7 +235,7 @@
 <p>Тези файлове <strong>никога не се изпращат на мен или на някой друг</strong>. Други приложения не могат да ги четат. Изтриват се, когато премахнеш играта или изчистиш данните ѝ от настройките на Android. Ако архивирането е включено, Android може да ги копира в твоя собствен Google акаунт (Android Auto Backup); това е между теб и Google.</p>
 
 <h2>3. Реклами (Google AdMob)</h2>
-<p>Twinova е безплатна. Издържа се от реклами, показвани от <strong>Google AdMob</strong> чрез Mobile Ads SDK на Google. Налични са и покупки в играта по избор: <em>Премахни рекламите</em> и пакети с бустери (виж раздел 5).</p>
+<p>Twinova е безплатна. Издържа се от реклами, показвани от <strong>Google AdMob</strong> чрез Mobile Ads SDK на Google. Налични са и покупки в играта по избор: <em>Премахни рекламите</em> и пакети с бустери (виж раздел 6).</p>
 <ul>
   <li><strong>Наградните реклами</strong> са по избор: ти решаваш да гледаш една, за да получиш +5 хода, безплатен бустер за един опит или сканиране за Резонанс. Наградата получаваш само ако гледаш рекламата до края. Остават налични и ако си купил <em>Премахни рекламите</em>.</li>
   <li><strong>Междинни реклами</strong> може да се появят между нивата, само след като си стигнал ниво 15, и никога ако си купил <em>Премахни рекламите</em>.</li>
@@ -231,46 +255,68 @@
 <p>За да отговори, Firebase получава <strong>идентификатора на инсталацията</strong> (случаен идентификатор на тази инсталация на играта), <strong>IP адреса ти</strong>, <strong>версията на приложението</strong> и данните за устройството, които носи всяка интернет заявка. Не участват акаунт, име, имейл адрес или рекламен идентификатор, а играта работи и без отговора.</p>
 <p>Тези данни се обработват от Google. Повече за това как Google работи с тях: <a href="https://policies.google.com/privacy" rel="noopener">Политика за поверителност на Google</a>.</p>
 
-<h2>5. Покупки (Google Play Billing)</h2>
+<h2>5. Аналитика (Google Analytics for Firebase)</h2>
+<p>За да виждам къде нивата са прекалено трудни или прекалено лесни и така да настройвам трудността, Twinova ползва <strong>Google Analytics for Firebase</strong> — услуга на Google. Тя записва събития за това как се играе играта:</p>
+<ul>
+  <li><strong>Нива:</strong> започнато ниво (неговият идентификатор, главата, кой пореден опит е, лимитът на ходовете и дали си го продължил от мястото, където си спрял) и приключило (спечелено, изгубено, започнато отначало или напуснато; използваните и оставащите ходове, звездите, дали си взел +5 хода или си ползвал бустери, колко Резонанса си направил и на кои ходове, кои цели са били още неизпълнени и изиграните секунди).</li>
+  <li><strong>Дневното предизвикателство:</strong> датата му, дали си го спечелил и серията ти.</li>
+  <li><strong>Учене на играта:</strong> кои стъпки от обучението си завършил и кога си отворил <em>Как се играе</em>.</li>
+  <li><strong>Реклами и магазин:</strong> за кои незадължителни реклами с награда си поискал и дали е била показана, изгледана или е нямало налична; дали си ползвал Резонансното сканиране; кога си отворил магазина и как е завършила една покупка (направена, отказана, чакаща или неуспешна — само с името на продукта, никога с цена).</li>
+  <li><strong>Автоматични събития</strong>, които Firebase записва сам: първо отваряне, сесии и, за покупки през Google Play, самата покупка (записва я Google).</li>
+</ul>
+<p>Всяко събитие се изпраща заедно с <strong>идентификатор на инсталацията (app instance ID)</strong> — случаен идентификатор на тази инсталация на играта, <strong>модела на устройството</strong>, <strong>версията на операционната система</strong>, <strong>версията на приложението</strong> и <strong>приблизителната държава</strong>, която се определя от IP адреса ти.</p>
+<p>За аналитиката не се събират акаунт, име, имейл адрес или рекламен идентификатор.</p>
+<p>За да сравнявам как хората наистина играят с това, което съм очаквал, изнасям тези събития от Google Analytics в проект в BigQuery, който ползвам само аз, и ги ползвам само за настройване на трудността на играта.</p>
+<h3>Твоето съгласие и избор</h3>
+<ul>
+  <li>В Европейското икономическо пространство и Обединеното кралство аналитиката работи само ако се съгласиш във формуляра на Google за съгласие. Докато не си отговорил, нищо не се изпраща. Можеш да промениш избора си по всяко време от <strong>Настройки → Опции за поверителност</strong>.</li>
+  <li>Извън ЕИП и Обединеното кралство аналитиката е включена по подразбиране.</li>
+  <li>В щатите на САЩ със закони за поверителност изборът в Опции за поверителност се отнася за рекламите, а не за тази статистика от играта.</li>
+</ul>
+<p>Google Analytics пази данните на ниво събитие 2 месеца, а данните, свързани с идентификатора на инсталацията, до 14 месеца (този срок започва отново, когато играта се ползва пак). Обобщените отчети се пазят по-дълго.</p>
+<p>Тези данни се обработват от Google. Повече за това как Google работи с тях: <a href="https://policies.google.com/privacy" rel="noopener">Политика за поверителност на Google</a> и <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">Как Google използва информация от сайтове или приложения, които ползват услугите му</a>.</p>
+
+<h2>6. Покупки (Google Play Billing)</h2>
 <p>В играта можеш да купиш <em>Премахни рекламите</em> и пакети с бустери. Плащанията се обработват изцяло от <strong>Google Play</strong>. Аз никога не виждам данните на картата ти, името или адреса ти; Google само съобщава на играта, че покупката е минала, а играта го помни в телефона ти, както е описано по-горе. Възстановяванията на суми и въпросите за плащане се уреждат от Google Play. Виж <a href="https://policies.google.com/privacy" rel="noopener">Политиката за поверителност на Google</a> и <a href="https://play.google.com/about/play-terms/" rel="noopener">Условията за ползване на Google Play</a>.</p>
 
-<h2>6. Какво играта не прави</h2>
+<h2>7. Какво играта не прави</h2>
 <ul>
   <li>Няма акаунт, вход или потребителски профил.</li>
-  <li>Няма собствено проследяване или бисквитки. (Рекламите, описани в раздел 3, и настройките, описани в раздел 4, са на Google и може да използват свои идентификатори, бисквитки или подобни технологии.)</li>
+  <li>Няма собствено проследяване или бисквитки. (Рекламите, описани в раздел 3, настройките, описани в раздел 4, и аналитиката, описана в раздел 5, са на Google и може да използват свои идентификатори, бисквитки или подобни технологии.)</li>
   <li>Не ползва местоположението, контактите, камерата, микрофона, снимките или файловете ти.</li>
   <li>Няма чат или социални функции и не показва данни на други играчи.</li>
 </ul>
 <p>Играта иска от Android тези разрешения:</p>
 <ul>
-  <li><strong>Интернет и състояние на мрежата</strong> (<code>INTERNET</code>, <code>ACCESS_NETWORK_STATE</code>): за зареждане на реклами и настройки и за проверка на връзката. Ползват се от Mobile Ads SDK на Google и от Firebase.</li>
+  <li><strong>Интернет и състояние на мрежата</strong> (<code>INTERNET</code>, <code>ACCESS_NETWORK_STATE</code>): за зареждане на реклами и настройки, изпращане на събития за аналитика и проверка на връзката. Ползват се от Mobile Ads SDK на Google и от Firebase.</li>
   <li><strong>Рекламен идентификатор</strong> (<code>com.google.android.gms.permission.AD_ID</code>): рекламният идентификатор, ползван за реклами, както е описано в раздел 3.</li>
   <li><strong>Рекламни услуги на Android</strong> (<code>ACCESS_ADSERVICES_AD_ID</code>, <code>ACCESS_ADSERVICES_ATTRIBUTION</code>, <code>ACCESS_ADSERVICES_TOPICS</code>): рекламните услуги на Privacy Sandbox на Android, които Mobile Ads SDK на Google ползва там, където устройството ти ги поддържа.</li>
   <li><strong>Плащане през Google Play</strong> (<code>com.android.vending.BILLING</code>): незадължителните покупки през Google Play.</li>
+  <li><strong>Източник на инсталацията от Google Play</strong> (<code>com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE</code>): позволява на Google Play да съобщи на библиотеката за аналитика как е инсталирана играта.</li>
   <li><strong>Задържане на устройството будно и кратка задача</strong> (<code>WAKE_LOCK</code>, <code>FOREGROUND_SERVICE</code>): добавени от библиотеката за фонови задачи (WorkManager) на Mobile Ads SDK на Google, за да завършва кратки фонови задачи. Самата игра не работи във фонов режим.</li>
   <li><strong>Вибрация</strong> (<code>VIBRATE</code>): само за тактилна обратна връзка, която можеш да изключиш в Настройки.</li>
 </ul>
 <p>Играта не иска други разрешения, например за местоположение, контакти, камера, микрофон, снимки или файлове.</p>
 
-<h2>7. Споделяне</h2>
-<p>Не продавам данните ти за пари. Единствените други страни са Google (реклами, Remote Config и плащания), както е описано по-горе, които действат според собствените си политики за поверителност. Рекламите на Google може да използват данни за персонализирани реклами, което някои закони в щати на САЩ смятат за продажба или споделяне; можеш да се откажеш от <strong>Настройки → Опции за поверителност</strong>.</p>
+<h2>8. Споделяне</h2>
+<p>Не продавам данните ти за пари. Единствените други страни са Google (реклами, аналитика, Remote Config и плащания), както е описано по-горе, които действат според собствените си политики за поверителност. Рекламите на Google може да използват данни за персонализирани реклами, което някои закони в щати на САЩ смятат за продажба или споделяне; можеш да се откажеш от <strong>Настройки → Опции за поверителност</strong>.</p>
 
-<h2>8. Деца</h2>
+<h2>9. Деца</h2>
 <p>Twinova е пъзел игра за широка публика и <strong>не е насочена към деца под 13 години</strong> (или под минималната възраст по закона там, където живееш — например 16 години в някои държави от ЕС). Не събирам съзнателно информация от деца, а самата игра не иска име, имейл или данни за акаунт. Ако си родител или настойник и смяташ, че детето ти е ползвало играта по начин, който те тревожи, свържи се с мен и ще помогна.</p>
 
-<h2>9. Съхранение и изтриване на данни</h2>
-<p>Данните на играта остават в телефона ти, докато не премахнеш играта или не изчистиш данните ѝ. Данните, които Google събира за реклами и Remote Config, се пазят и могат да се управляват, както е описано в политиките на Google и в Google акаунта и настройките на Android.</p>
+<h2>10. Съхранение и изтриване на данни</h2>
+<p>Данните на играта остават в телефона ти, докато не премахнеш играта или не изчистиш данните ѝ. Данните, които Google събира за реклами, аналитика и Remote Config, се пазят и могат да се управляват, както е описано в политиките на Google и в Google акаунта и настройките на Android.</p>
 
-<h2>10. Твоите права</h2>
-<p>В зависимост от това къде живееш (например в ЕС/ЕИП, Обединеното кралство или някои щати на САЩ) може да имаш права върху личните данни, като достъп, поправяне, изтриване, възражение и оттегляне на съгласие. Тъй като не поддържам акаунт и не пазя данни, които те идентифицират, има малко неща, които мога сам да ти предоставя или изтрия; за данните, които Google събира чрез реклами и Remote Config, ползвай изборите по-горе, настройките на Google акаунта си или се обърни към Google. Съгласието за реклами можеш да оттеглиш по всяко време, както е описано в раздел 3. Можеш да подадеш жалба и до местния орган по защита на данните. Пиши ми, ако имаш въпроси.</p>
+<h2>11. Твоите права</h2>
+<p>В зависимост от това къде живееш (например в ЕС/ЕИП, Обединеното кралство или някои щати на САЩ) може да имаш права върху личните данни, като достъп, поправяне, изтриване, възражение и оттегляне на съгласие. Тъй като не поддържам акаунт и не пазя данни, които те идентифицират, има малко неща, които мога сам да ти предоставя или изтрия; за данните, които Google събира чрез реклами, аналитика и Remote Config, ползвай изборите по-горе, настройките на Google акаунта си или се обърни към Google. Съгласието за реклами и аналитика можеш да оттеглиш по всяко време, както е описано в раздели 3 и 5. Можеш да подадеш жалба и до местния орган по защита на данните. Пиши ми, ако имаш въпроси.</p>
 
-<h2>11. Сигурност и международна обработка</h2>
-<p>Данните на играта стоят в личната ѝ памет на телефона и са защитени от Android. Плащанията, рекламите и Remote Config се обработват от Google, който обработва данни в много държави със собствени гаранции.</p>
+<h2>12. Сигурност и международна обработка</h2>
+<p>Данните на играта стоят в личната ѝ памет на телефона и са защитени от Android. Плащанията, рекламите, аналитиката и Remote Config се обработват от Google, който обработва данни в много държави със собствени гаранции.</p>
 
-<h2>12. Промени в тази политика</h2>
+<h2>13. Промени в тази политика</h2>
 <p>Когато променя политиката, ще обновя датата в началото на тази страница. Актуалната версия винаги е на този адрес.</p>
 
-<h2>13. Контакти</h2>
+<h2>14. Контакти</h2>
 <p>Virevon — <a href="mailto:quantumesqy@gmail.com">quantumesqy@gmail.com</a></p>
 
 <footer><p>Twinova · Virevon · В сила от 3 ноември 2026 г.</p></footer>
